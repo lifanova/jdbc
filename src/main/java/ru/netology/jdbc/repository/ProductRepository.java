@@ -14,16 +14,16 @@ import java.util.stream.Collectors;
 
 @Repository
 public class ProductRepository {
+    private static final String SQL_SCRIPT = "select.sql";
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
     public String getProductName(String name) {
-
-        String pathScript = "select.sql";
-        String scriptSelect = read(pathScript);
+        String scriptSelect = read(SQL_SCRIPT);
 
         Product product = jdbcTemplate.queryForObject(scriptSelect,
                 (rs, rowNum) -> new Product(rs.getString("name"), rs.getString("product_name")), name);
+
         if (product != null) {
             return product.getProductName();
         } else {
